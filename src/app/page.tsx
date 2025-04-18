@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -10,12 +10,14 @@ import {
   PlusCircle,
   Calendar,
   Edit,
+  Brain,
 } from "lucide-react";
 import { suggestDueDate } from "@/ai/flows/suggest-due-date";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
+import { suggestHealthcareTasks } from "@/ai/flows/suggest-healthcare-tasks";
 
 interface Task {
   id: string;
@@ -30,6 +32,42 @@ export default function Home() {
   const { toast } = useToast();
   const [profession, setProfession] = useState("");
   const [professionDetails, setProfessionDetails] = useState("");
+  const [suggestedTasks, setSuggestedTasks] = useState<string[]>([]);
+  const [profileLoaded, setProfileLoaded] = useState(false);
+
+  useEffect(() => {
+    const storedProfile = localStorage.getItem("profile");
+    if (storedProfile) {
+      const profile = JSON.parse(storedProfile);
+      setProfession(profile.profession);
+      setProfessionDetails(profile.details);
+      setProfileLoaded(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (profileLoaded) {
+      getSuggestedTasks();
+    }
+  }, [profileLoaded, profession, professionDetails]);
+
+  const getSuggestedTasks = async () => {
+    if (profession && professionDetails) {
+      try {
+        const suggestedTasksResult = await suggestHealthcareTasks({
+          profession: profession,
+          professionDetails: professionDetails,
+        });
+        setSuggestedTasks(suggestedTasksResult.tasks);
+      } catch (error: any) {
+        toast({
+          title: "Error suggesting healthcare tasks.",
+          description: error.message,
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   const handleAddTask = async () => {
     if (newTask.trim() === "") return;
@@ -72,12 +110,16 @@ export default function Home() {
     setTasks(tasks.filter((task) => task.id !== id));
   };
 
+  const handleAddSuggestedTask = (task: string) => {
+    setNewTask(task);
+  };
+
   return (
     <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4">
       <Toaster />
       <Card className="w-full max-w-md p-4 rounded-lg shadow-md bg-card">
         <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-foreground">
+          <CardTitle className="text-2xl font-semibold text-foreground flex items-center justify-between">
             TaskMaster 🚀
           </CardTitle>
         </CardHeader>
@@ -105,6 +147,32 @@ export default function Home() {
               Add Task <PlusCircle className="ml-2 h-4 w-4" />
             </Button>
           </div>
+
+          {suggestedTasks.length > 0 && (
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center">
+                <Brain className="mr-2 h-5 w-5" /> Suggested Tasks:
+              </h3>
+              <ul>
+                {suggestedTasks.map((task, index) => (
+                  <li
+                    key={index}
+                    className="flex items-center justify-between py-2 border-b border-border last:border-none"
+                  >
+                    <span className="text-sm text-muted-foreground">{task}</span>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleAddSuggestedTask(task)}
+                    >
+                      Add <PlusCircle className="ml-2 h-4 w-4" />
+                    </Button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {tasks.map((task) => (
             <div
               key={task.id}

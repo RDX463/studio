@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +24,13 @@ const ProfilePage = () => {
   });
   const { toast } = useToast();
 
+  useEffect(() => {
+    const storedProfile = localStorage.getItem("profile");
+    if (storedProfile) {
+      setProfile(JSON.parse(storedProfile));
+    }
+  }, []);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setProfile({ ...profile, [name]: value });
@@ -31,7 +38,7 @@ const ProfilePage = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically save the profile data to a database or local storage
+    localStorage.setItem("profile", JSON.stringify(profile));
     toast({
       title: "Profile Saved",
       description: "Your profile has been successfully saved.",
