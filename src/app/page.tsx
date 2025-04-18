@@ -1,4 +1,3 @@
-
 "use client";
 
 import React, { useState } from "react";
@@ -10,6 +9,7 @@ import { suggestDueDate } from "@/ai/flows/suggest-due-date";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Link from "next/link";
 
 interface Task {
   id: string;
@@ -22,12 +22,18 @@ export default function Home() {
   const [newTask, setNewTask] = useState("");
   const [tasks, setTasks] = useState<Task[]>([]);
   const { toast } = useToast();
+  const [profession, setProfession] = useState("");
+  const [professionDetails, setProfessionDetails] = useState("");
 
   const handleAddTask = async () => {
     if (newTask.trim() === "") return;
 
     try {
-      const suggestedDate = await suggestDueDate({ task: newTask });
+      const suggestedDate = await suggestDueDate({
+        task: newTask,
+        profession: profession,
+        professionDetails: professionDetails,
+      });
 
       setTasks([
         ...tasks,
@@ -70,6 +76,27 @@ export default function Home() {
           </CardTitle>
         </CardHeader>
         <CardContent>
+          <div className="mb-4">
+            <Link href="/profile" className="text-blue-500 hover:underline">
+              Edit Profile
+            </Link>
+          </div>
+          <div className="mb-4">
+            <Input
+              type="text"
+              placeholder="Your Profession"
+              value={profession}
+              onChange={(e) => setProfession(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <Input
+              type="text"
+              placeholder="Profession Details"
+              value={professionDetails}
+              onChange={(e) => setProfessionDetails(e.target.value)}
+            />
+          </div>
           <div className="flex space-x-2 mb-4">
             <Input
               type="text"

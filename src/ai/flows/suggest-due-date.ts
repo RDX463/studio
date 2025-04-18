@@ -1,6 +1,7 @@
 'use server';
 /**
- * @fileOverview An AI agent that suggests a due date for a given task.
+ * @fileOverview An AI agent that suggests a due date for a given task,
+ * considering the user's profession.
  *
  * - suggestDueDate - A function that suggests a due date for a task.
  * - SuggestDueDateInput - The input type for the suggestDueDate function.
@@ -12,6 +13,8 @@ import {z} from 'genkit';
 
 const SuggestDueDateInputSchema = z.object({
   task: z.string().describe('The task for which to suggest a due date.'),
+  profession: z.string().optional().describe('The user\'s profession.'),
+  professionDetails: z.string().optional().describe('Details about the user\'s profession, including typical tasks and work hours.'),
 });
 export type SuggestDueDateInput = z.infer<typeof SuggestDueDateInputSchema>;
 
@@ -29,6 +32,8 @@ const prompt = ai.definePrompt({
   input: {
     schema: z.object({
       task: z.string().describe('The task for which to suggest a due date.'),
+      profession: z.string().optional().describe('The user\'s profession.'),
+      professionDetails: z.string().optional().describe('Details about the user\'s profession, including typical tasks and work hours.'),
     }),
   },
   output: {
@@ -38,7 +43,9 @@ const prompt = ai.definePrompt({
   },
   prompt: `You are a helpful AI assistant that suggests a due date for a given task.
 
-  Given the following task, suggest a due date in ISO format (YYYY-MM-DD).  Take into account how long the task will take.
+  Given the following task, suggest a due date in ISO format (YYYY-MM-DD).  Take into account how long the task will take.  Consider the user's profession when suggesting a due date.
+  Profession: {{{profession}}}
+  Profession Details: {{{professionDetails}}}
 
   Task: {{{task}}}`,
 });
