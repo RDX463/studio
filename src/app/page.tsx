@@ -115,15 +115,15 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-background p-6">
       <Toaster />
-      <Card className="w-full max-w-md p-4 rounded-lg shadow-md bg-card">
-        <CardHeader>
-          <CardTitle className="text-2xl font-semibold text-foreground flex items-center justify-between">
+      <Card className="w-full max-w-md rounded-lg shadow-md bg-card">
+        <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
+          <CardTitle className="text-2xl font-semibold text-foreground">
             TaskMaster 🚀
           </CardTitle>
         </CardHeader>
-        <CardContent>
+        <CardContent className="pl-2 pr-2">
           <div className="mb-4 flex justify-between items-center">
             <Link
               href="/profile"
@@ -139,10 +139,11 @@ export default function Home() {
               placeholder="Add a task"
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
+              className="rounded-md shadow-sm"
             />
             <Button
               onClick={handleAddTask}
-              className="bg-primary text-primary-foreground hover:bg-primary/80"
+              className="bg-primary text-primary-foreground hover:bg-primary/80 rounded-md"
             >
               Add Task <PlusCircle className="ml-2 h-4 w-4" />
             </Button>
@@ -153,17 +154,18 @@ export default function Home() {
               <h3 className="text-lg font-semibold text-foreground mb-2 flex items-center">
                 <Brain className="mr-2 h-5 w-5" /> Suggested Tasks:
               </h3>
-              <ul>
+              <ul className="space-y-2">
                 {suggestedTasks.map((task, index) => (
                   <li
                     key={index}
-                    className="flex items-center justify-between py-2 border-b border-border last:border-none"
+                    className="flex items-center justify-between py-2 rounded-md bg-secondary"
                   >
-                    <span className="text-sm text-muted-foreground">{task}</span>
+                    <span className="text-sm text-muted-foreground ml-2">{task}</span>
                     <Button
                       variant="outline"
                       size="sm"
                       onClick={() => handleAddSuggestedTask(task)}
+                      className="mr-2"
                     >
                       Add <PlusCircle className="ml-2 h-4 w-4" />
                     </Button>
@@ -204,7 +206,7 @@ export default function Home() {
                 variant="outline"
                 size="icon"
                 onClick={() => handleDeleteTask(task.id)}
-                className="hover:bg-red-500 hover:text-red-50"
+                className="hover:bg-red-500 hover:text-red-50 rounded-md"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>

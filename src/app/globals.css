@@ -9,19 +9,19 @@ body {
 
 @layer base {
   :root {
-    --background: 180 34% 81%;
+    --background: 180 26% 85%; /* Light Gray */
     --foreground: 220 10% 39%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 167 41% 60%;
+    --primary: 169 50% 70%; /* Light Teal */
     --primary-foreground: 210 40% 98%;
     --secondary: 210 22.7% 85.5%;
     --secondary-foreground: 222.2 47.4% 11.2%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 32 100% 59%;
+    --accent: 32 100% 59%; /* Soft Orange */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
@@ -51,13 +51,13 @@ body {
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 167 41% 60%;
+    --primary: 169 50% 70%; /* Light Teal */
     --primary-foreground: 210 40% 98%;
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
     --muted: 216.9 10% 21%;
     --muted-foreground: 215.4 16.3% 56.9%;
-    --accent: 32 100% 59%;
+    --accent: 32 100% 59%; /* Soft Orange */
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 210 40% 98%;
