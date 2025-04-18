@@ -7,6 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
+import { Textarea } from "@/components/ui/textarea";
+import { User, Briefcase, Pencil } from "lucide-react";
 
 interface Profile {
   name: string;
@@ -37,18 +39,21 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen bg-secondary p-4">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4">
       <Toaster />
       <Card className="w-full max-w-md p-4 rounded-lg shadow-md bg-card">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold text-foreground">
-            Your Profile
+            Your Profile <User className="inline-block h-6 w-6 ml-2" />
           </CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
             <div>
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name" className="flex items-center space-x-2">
+                <User className="h-4 w-4" />
+                <span>Name</span>
+              </Label>
               <Input
                 type="text"
                 id="name"
@@ -59,7 +64,10 @@ const ProfilePage = () => {
               />
             </div>
             <div>
-              <Label htmlFor="profession">Profession</Label>
+              <Label htmlFor="profession" className="flex items-center space-x-2">
+                <Briefcase className="h-4 w-4" />
+                <span>Profession</span>
+              </Label>
               <Input
                 type="text"
                 id="profession"
@@ -70,8 +78,11 @@ const ProfilePage = () => {
               />
             </div>
             <div>
-              <Label htmlFor="details">Profession Details</Label>
-              <textarea
+              <Label htmlFor="details" className="flex items-center space-x-2">
+                <Pencil className="h-4 w-4" />
+                <span>Profession Details</span>
+              </Label>
+              <Textarea
                 id="details"
                 name="details"
                 value={profile.details}

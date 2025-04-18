@@ -4,7 +4,13 @@ import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Trash2 } from "lucide-react";
+import {
+  Trash2,
+  CheckCircle,
+  PlusCircle,
+  Calendar,
+  Edit,
+} from "lucide-react";
 import { suggestDueDate } from "@/ai/flows/suggest-due-date";
 import { useToast } from "@/hooks/use-toast";
 import { Toaster } from "@/components/ui/toaster";
@@ -67,35 +73,23 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen bg-secondary p-4">
+    <div className="flex flex-col items-center justify-start min-h-screen bg-background p-4">
       <Toaster />
       <Card className="w-full max-w-md p-4 rounded-lg shadow-md bg-card">
         <CardHeader>
           <CardTitle className="text-2xl font-semibold text-foreground">
-            TaskMaster
+            TaskMaster 🚀
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <div className="mb-4">
-            <Link href="/profile" className="text-blue-500 hover:underline">
-              Edit Profile
+          <div className="mb-4 flex justify-between items-center">
+            <Link
+              href="/profile"
+              className="text-primary hover:underline flex items-center space-x-2"
+            >
+              <Edit className="h-4 w-4" />
+              <span>Edit Profile</span>
             </Link>
-          </div>
-          <div className="mb-4">
-            <Input
-              type="text"
-              placeholder="Your Profession"
-              value={profession}
-              onChange={(e) => setProfession(e.target.value)}
-            />
-          </div>
-          <div className="mb-4">
-            <Input
-              type="text"
-              placeholder="Profession Details"
-              value={professionDetails}
-              onChange={(e) => setProfessionDetails(e.target.value)}
-            />
           </div>
           <div className="flex space-x-2 mb-4">
             <Input
@@ -104,8 +98,11 @@ export default function Home() {
               value={newTask}
               onChange={(e) => setNewTask(e.target.value)}
             />
-            <Button onClick={handleAddTask} className="bg-primary text-primary-foreground hover:bg-primary/80">
-              Add Task
+            <Button
+              onClick={handleAddTask}
+              className="bg-primary text-primary-foreground hover:bg-primary/80"
+            >
+              Add Task <PlusCircle className="ml-2 h-4 w-4" />
             </Button>
           </div>
           {tasks.map((task) => (
@@ -129,6 +126,7 @@ export default function Home() {
                   {task.dueDate && (
                     <span className="text-xs text-muted-foreground">
                       {" "}
+                      <Calendar className="inline-block h-3 w-3 mr-1" />
                       (Due: {task.dueDate})
                     </span>
                   )}
